@@ -66,10 +66,6 @@ export const RootPage = async ({
 
   let dbHasUser = false
 
-  if (!DefaultView?.Component && !DefaultView?.payloadComponent) {
-    notFound()
-  }
-
   const initPageResult = await initPage(initPageOptions)
 
   if (typeof initPageResult?.redirectTo === 'string') {
@@ -89,17 +85,17 @@ export const RootPage = async ({
     const collectionConfig = config.collections.find(({ slug }) => slug === userSlug)
     const disableLocalStrategy = collectionConfig?.auth?.disableLocalStrategy
 
-    if (disableLocalStrategy && currentRoute === createFirstUserRoute) {
+    if (currentRoute === createFirstUserRoute && (disableLocalStrategy || dbHasUser)) {
       redirect(adminRoute)
     }
 
-    if (!dbHasUser && currentRoute !== createFirstUserRoute && !disableLocalStrategy) {
+    if (currentRoute !== createFirstUserRoute && !dbHasUser && !disableLocalStrategy) {
       redirect(createFirstUserRoute)
     }
+  }
 
-    if (dbHasUser && currentRoute === createFirstUserRoute) {
-      redirect(adminRoute)
-    }
+  if (!DefaultView?.Component && !DefaultView?.payloadComponent) {
+    notFound()
   }
 
   const createMappedView = getCreateMappedComponent({
