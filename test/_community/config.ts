@@ -151,13 +151,13 @@ export default buildConfigWithDefaults({
     // ...add more globals here
   ],
   onInit: async (payload) => {
-    await payload.create({
-      collection: 'users',
-      data: {
-        email: devUser.email,
-        password: devUser.password,
-      },
-    })
+    // await payload.create({
+    //   collection: 'users',
+    //   data: {
+    //     email: devUser.email,
+    //     password: devUser.password,
+    //   },
+    // })
 
     await payload.create({
       collection: postsSlug,
